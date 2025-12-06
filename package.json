@@ -1,0 +1,40 @@
+{
+  "name": "@sahiljena/react-webview-debugger",
+  "version": "1.0.2",
+  "description": "A lightweight React WebView Debugger panel for cookies, storage, console, network, and features",
+  "author": "Sahil Jena",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepare": "tsup"
+  },
+  "keywords": [
+    "react",
+    "debugger",
+    "webview",
+    "devtools",
+    "storage",
+    "network"
+  ],
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "react": ">=17",
+    "react-dom": ">=17",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
+  "files": [
+    "dist"
+  ]
+}
