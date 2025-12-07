@@ -1,30 +1,15 @@
-# react-webview-debugger
+# **React WebView Debugger**
+
 <img src="https://res.cloudinary.com/sahiljena/image/upload/v1765015153/Screenshot_2025-12-06_at_3.18.57_PM_lf27qi.png"/>
-A lightweight **React WebView Debugger** to inspect and edit cookies, localStorage, sessionStorage, console errors, and network calls — directly in your web app, **without connecting a USB** or using external dev tools.
+
+A powerful, plug-and-play **debugging panel for WebViews, PWAs, and web apps**.
+Inspect storage, track network calls, monitor console errors, and check browser capabilities — **all directly inside your app**, without USB cables or external DevTools.
+
+If you’ve ever struggled to debug a mobile WebView… this tool is built for you.
 
 ---
 
-## **Why this library?**
-
-Debugging WebViews can be frustrating:
-
-- You can’t always open Chrome DevTools on mobile.
-- Editing cookies, localStorage, or sessionStorage can be cumbersome.
-- Tracking network requests and console errors is not straightforward.
-- Exporting all debugging data for offline analysis is tedious.
-- Checking whether modern browser features (like `SharedArrayBuffer`) are available is hard.
-
-**This library solves all of that**, giving you a **developer-friendly panel** embedded in your app:
-
-- View, **edit, delete, or add** cookies, localStorage, and sessionStorage.
-- See **console errors** in real-time.
-- Inspect **network requests and responses**.
-- Download a **compressed JSON** of all logs for offline analysis.
-- Includes a **Features tab** showing environment capabilities and feature support (e.g., `SharedArrayBuffer`).
-
----
-
-## **Installation**
+## **📦 Installation**
 
 ```bash
 npm install @sahiljena/react-webview-debugger
@@ -34,68 +19,78 @@ yarn add @sahiljena/react-webview-debugger
 
 ---
 
-## **Usage**
+## **🚀 Get Started in Seconds**
+
+Drop it anywhere in your app:
 
 ```tsx
 "use client";
-import { useState } from "react";
 import { DebuggerTool } from "@sahiljena/react-webview-debugger";
 
 export default function App() {
-  const [showDebugger, setShowDebugger] = useState(true);
-
   return (
     <>
-      {showDebugger && <DebuggerTool />}
+      <DebuggerTool />
       <h1>My App</h1>
     </>
   );
 }
 ```
 
-> ✅ That’s it! `<DebugTool />` automatically tracks:
->
-> - Cookies, localStorage, sessionStorage
-> - Console errors
-> - Network requests/responses
-> - Environment features like `SharedArrayBuffer`
+That’s it.
+The debugger immediately starts capturing:
 
-No props are required unless you want to control visibility via `onClose`.
+- Cookies
+- localStorage & sessionStorage
+- Network requests and responses
+- Console errors & warnings
+- Environment features like `SharedArrayBuffer`
+
+No setup. No configuration. No hassle.
 
 ---
 
-## **Quick One-Line Usage (Emoji-friendly)**
+## **✨ What Makes It Awesome**
+
+- **Live inspection** of cookies, localStorage, and sessionStorage
+- **Edit, delete, and create** storage entries effortlessly
+- **Real-time console error tracking**
+- **Network request viewer** with searchable logs
+- **One-click export**: Receive a compressed JSON containing _everything_
+- **Feature detector**: Instantly check browser API support
+
+---
+
+## **🔧 Recommended Usage**
+
+Add an environment flag to show the debugger only in dev builds:
 
 ```tsx
-<DebugTool /> ⚡ Inspect cookies, storage, console, network & features instantly!
+{
+  process.env.NEXT_PUBLIC_DEBUG === "true" && <DebuggerTool />;
+}
 ```
 
----
-
-## **Features**
-
-- **Editable cookies, localStorage, sessionStorage**
-- **Searchable console errors and network logs**
-- **Add, edit, delete storage entries**
-- **Export all data** to JSON for offline analysis
-- **Features tab**: Shows important browser features and full globals, with support indicators ✅/❌
-- **Fullscreen mode** for maximum visibility
-- **Dark theme** by default
+> Note: Console & network logs refresh when switching between tabs (auto-refresh coming soon).
 
 ---
 
-## **Why it’s useful**
+## **📁 Links**
 
-- Quickly debug mobile WebViews **without a USB connection**.
-- Inspect client-side storage dynamically.
-- Track and export console and network issues.
-- Check environment support for modern browser features.
-- Perfect for testing apps that rely heavily on WebView content.
+- **GitHub:** [https://github.com/sahiljena/react-webview-debugger](https://github.com/sahiljena/react-webview-debugger)
+- **NPM:** [https://www.npmjs.com/package/@sahiljena/react-webview-debugger](https://www.npmjs.com/package/@sahiljena/react-webview-debugger)
 
 ---
 
-## **License**
+## **📜 License**
 
 MIT © Sahil Jena
 
 ---
+
+If you want, I can also:
+🔥 Craft a high-impact **LinkedIn launch post**
+💡 Write a **tagline** or **promo copy** for your NPM/GitHub page
+🎨 Design a **hero banner** for the README
+
+Just say the word.
