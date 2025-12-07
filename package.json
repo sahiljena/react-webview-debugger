@@ -7,7 +7,10 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "prepare": "tsup"
+    "prepare": "tsup",
+    "release:patch": "npm run build && npm version patch && npm publish --access public && git push && git push --tags",
+    "release:minor": "npm run build && npm version minor && npm publish --access public && git push && git push --tags",
+    "release:major": "npm run build && npm version major && npm publish --access public && git push && git push --tags"
   },
   "keywords": [
     "react",
