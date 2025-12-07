@@ -87,10 +87,3 @@ Add an environment flag to show the debugger only in dev builds:
 MIT © Sahil Jena
 
 ---
-
-If you want, I can also:
-🔥 Craft a high-impact **LinkedIn launch post**
-💡 Write a **tagline** or **promo copy** for your NPM/GitHub page
-🎨 Design a **hero banner** for the README
-
-Just say the word.
