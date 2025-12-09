@@ -1,7 +1,7 @@
 {
   "name": "@sahiljena/react-webview-debugger",
   "version": "1.1.1",
-  "description": "A lightweight React WebView Debugger panel for cookies, storage, console, network, and features",
+  "description": "A lightweight WebView Debugger panel for cookies, storage, console, network, and features",
   "author": "Sahil Jena",
   "license": "MIT",
   "scripts": {
