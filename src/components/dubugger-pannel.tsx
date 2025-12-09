@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { downloadLogs } from "../utils/download-logs";
 import { EditableBlock } from "./editable-block";
-import { curatedFeatures, tabs } from "./constants";
+import { CURATED_FEATURES, TABS } from "./constants";
+import { ConsoleTab } from "./console";
+import { NetworkTab } from "./network-tab";
 
-export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
+export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
   const [tab, setTab] = useState("cookies");
   const [search, setSearch] = useState("");
   const [adding, setAdding] = useState(false);
@@ -11,6 +13,7 @@ export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
   const [newValue, setNewValue] = useState("");
   const [showFullGlobals, setShowFullGlobals] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [selectedConsoleFilter, setSelectedConsoleFilter] = useState("");
 
   const [cookies, setCookies] = useState(() =>
     document.cookie.split(";").map((c) => {
@@ -48,11 +51,12 @@ export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
   );
 
   const filteredConsole = useMemo(() => {
-    if (!search) return consoleErrors;
-    return consoleErrors.filter((c: any) =>
-      JSON.stringify(c).toLowerCase().includes(search)
+    return consoleLogs?.filter(
+      (c: any) =>
+        (!!search ? JSON.stringify(c).toLowerCase().includes(search) : true) &&
+        (!!selectedConsoleFilter ? c.type === selectedConsoleFilter : true)
     );
-  }, [consoleErrors, search]);
+  }, [consoleLogs, search, selectedConsoleFilter]);
 
   const filteredNetwork = useMemo(() => {
     if (!search) return networkLogs;
@@ -170,6 +174,13 @@ export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
     return obj;
   }, []);
 
+  const handleConsoleTypeSelector = (consoleMethod: string) => {
+    setSelectedConsoleFilter((prev) => {
+      if (prev === consoleMethod) return "";
+      return consoleMethod;
+    });
+  };
+
   return (
     <div
       style={{
@@ -236,10 +247,13 @@ export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
           flexWrap: "wrap",
         }}
       >
-        {tabs.map((t) => (
+        {TABS.map((t) => (
           <button
             key={t.key}
-            onClick={() => setTab(t.key)}
+            onClick={() => {
+              setSearch("");
+              setTab(t.key);
+            }}
             style={tabButton(t)}
           >
             {t.label}
@@ -376,16 +390,14 @@ export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
           ))}
 
         {tab === "console" && (
-          <pre style={{ color: "#ff6464", whiteSpace: "pre-wrap" }}>
-            {JSON.stringify(filteredConsole, null, 2)}
-          </pre>
+          <ConsoleTab
+            handleConsoleTypeSelector={handleConsoleTypeSelector}
+            consoles={filteredConsole}
+            selectedConsoleFilter={selectedConsoleFilter}
+          />
         )}
 
-        {tab === "network" && (
-          <pre style={{ color: "#4fa3ff", whiteSpace: "pre-wrap" }}>
-            {JSON.stringify(filteredNetwork, null, 2)}
-          </pre>
-        )}
+        {tab === "network" && <NetworkTab networkCalls={filteredNetwork} />}
 
         {tab === "download" && (
           <button
@@ -394,7 +406,7 @@ export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
                 cookies,
                 local,
                 session,
-                consoleErrors,
+                consoleLogs,
                 networkLogs,
               })
             }
@@ -415,7 +427,7 @@ export const DebugPanel = ({ consoleErrors, networkLogs, onClose }: any) => {
         {tab === "features" && (
           <div>
             <h4>Important Features</h4>
-            {curatedFeatures.map((feat) => {
+            {CURATED_FEATURES.map((feat) => {
               const available = checkFeature(feat);
               return (
                 <div key={feat} style={{ color: available ? "#0f0" : "#f44" }}>

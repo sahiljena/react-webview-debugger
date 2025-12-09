@@ -21,34 +21,60 @@ export const EditableBlock = ({
     <div
       style={{
         display: "flex",
+        flexDirection: "row",
+        gap: "10px",
         justifyContent: "space-between",
-        padding: "6px 0",
+        padding: "10px 0",
         borderBottom: "1px solid #333",
         alignItems: "center",
+        flexWrap: "wrap",
       }}
     >
-      {/* Key */}
-      <strong style={{ width: "30%", color: "#aaa" }}>{vKey}</strong>
+      <div
+        style={{
+          color: "#aaa",
+          fontSize: "0.9rem",
+        }}
+      >
+        {vKey} :
+      </div>
 
-      {/* Value or Input */}
       {editing ? (
         <input
           value={currentValue}
           onChange={(e) => setCurrentValue(e.target.value)}
           style={{
-            width: "50%",
+            flex: 1,
+            minWidth: "140px",
             background: "#222",
             color: "white",
             border: "1px solid #555",
-            padding: "4px",
+            padding: "6px",
+            borderRadius: 4,
           }}
         />
       ) : (
-        <span style={{ width: "50%", color: "#ccc" }}>{currentValue}</span>
+        <div
+          style={{
+            flex: 1,
+            minWidth: "140px",
+            color: "#ccc",
+            fontSize: "0.9rem",
+            wordBreak: "break-word",
+          }}
+        >
+          {currentValue}
+        </div>
       )}
 
-      {/* Actions */}
-      <div style={{ display: "flex", gap: 4 }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 6,
+          marginTop: "6px",
+          flexWrap: "wrap",
+        }}
+      >
         {editing ? (
           <>
             <button
@@ -56,13 +82,7 @@ export const EditableBlock = ({
                 onSave(currentValue);
                 setEditing(false);
               }}
-              style={{
-                background: "#2a7",
-                border: "none",
-                padding: "4px 8px",
-                cursor: "pointer",
-                color: "white",
-              }}
+              style={buttonStyle("#2a7")}
             >
               Save
             </button>
@@ -71,13 +91,7 @@ export const EditableBlock = ({
                 setCurrentValue(value);
                 setEditing(false);
               }}
-              style={{
-                background: "#a22",
-                border: "none",
-                padding: "4px 8px",
-                cursor: "pointer",
-                color: "white",
-              }}
+              style={buttonStyle("#a22")}
             >
               Cancel
             </button>
@@ -86,26 +100,11 @@ export const EditableBlock = ({
           <>
             <button
               onClick={() => setEditing(true)}
-              style={{
-                background: "#444",
-                border: "none",
-                padding: "4px 8px",
-                cursor: "pointer",
-                color: "white",
-              }}
+              style={buttonStyle("#444")}
             >
               Edit
             </button>
-            <button
-              onClick={onDelete}
-              style={{
-                background: "#a22",
-                border: "none",
-                padding: "4px 8px",
-                cursor: "pointer",
-                color: "white",
-              }}
-            >
+            <button onClick={onDelete} style={buttonStyle("#a22")}>
               Delete
             </button>
           </>
@@ -114,3 +113,15 @@ export const EditableBlock = ({
     </div>
   );
 };
+
+const buttonStyle = (bg: string) => ({
+  background: bg,
+  border: "none",
+  padding: "6px 10px",
+  cursor: "pointer",
+  color: "white",
+  borderRadius: 4,
+  fontSize: "0.85rem",
+  flexGrow: 1, // 🔥 Makes buttons adapt on mobile
+  minWidth: "70px",
+});

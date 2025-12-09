@@ -8,7 +8,7 @@ import { DebugPanel } from "./dubugger-pannel";
 export const DebuggerTool = () => {
   const [open, setOpen] = useState(false);
 
-  const { consoleErrors } = useConsoleLogger();
+  const { consoleLogs } = useConsoleLogger();
   const { networkLogs } = useNetworkLogger();
 
   return (
@@ -36,7 +36,7 @@ export const DebuggerTool = () => {
 
       {open && (
         <DebugPanel
-          consoleErrors={consoleErrors}
+          consoleLogs={consoleLogs}
           networkLogs={networkLogs}
           onClose={() => setOpen(false)}
         />
