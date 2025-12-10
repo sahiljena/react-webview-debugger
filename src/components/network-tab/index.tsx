@@ -1,5 +1,6 @@
 import { NetworkLog } from "../../hooks/use-network-logger";
 import { copyToClipboard } from "../../utils/copy-to-clipboard";
+import { ResponsePanel } from "./response-panel";
 
 export const NetworkTab = ({
   networkCalls,
@@ -80,6 +81,7 @@ export const NetworkTab = ({
             <span style={{ color: "#aaa" }}>{call.duration}ms</span>
           </div>
 
+          <ResponsePanel response={call.responseBody} />
           <button
             onClick={() => copyToClipboard(call.curl)}
             style={{

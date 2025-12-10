@@ -22,6 +22,7 @@ export const TABS = [
   { key: "network", label: "Network" },
   { key: "features", label: "Features" },
   { key: "download", label: "Download" },
+  { key: "urlEditor", label: "URL Editior" },
 ];
 
 export const CONSOLE_METHODS = ["log", "warn", "error", "info", "debug"];

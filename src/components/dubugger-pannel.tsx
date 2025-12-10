@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { downloadLogs } from "../utils/download-logs";
 import { EditableBlock } from "./editable-block";
 import { CURATED_FEATURES, TABS } from "./constants";
@@ -14,6 +14,8 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
   const [showFullGlobals, setShowFullGlobals] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [selectedConsoleFilter, setSelectedConsoleFilter] = useState("");
+  const consoleInputRef = useRef();
+  const urlInputRef = useRef();
 
   const [cookies, setCookies] = useState(() =>
     document.cookie.split(";").map((c) => {
@@ -195,7 +197,7 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
         boxShadow: "0 -2px 10px rgba(0,0,0,0.4)",
         display: "flex",
         flexDirection: "column",
-        zIndex: 999999,
+        zIndex: 1000000,
         fontFamily: "monospace",
       }}
     >
@@ -236,7 +238,6 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
           </button>
         </div>
       </div>
-
       <div
         style={{
           display: "flex",
@@ -262,7 +263,7 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
 
         {["cookies", "local", "session"].includes(tab) && (
           <button
-            onClick={() => setAdding(true)}
+            onClick={() => setAdding((prev) => !prev)}
             style={{
               marginLeft: 10,
               padding: "6px 12px",
@@ -278,8 +279,7 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
           </button>
         )}
       </div>
-
-      {tab !== "download" && (
+      {tab !== "download" && tab !== "urlEditor" && (
         <div style={{ padding: "8px 12px", background: "#111" }}>
           <input
             placeholder="Search..."
@@ -297,71 +297,152 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
           />
         </div>
       )}
-
       {adding && (
-        <div
-          style={{
-            padding: "8px 12px",
-            display: "flex",
-            gap: 6,
-            background: "#111",
-          }}
-        >
-          <input
-            placeholder="Key"
-            value={newKey}
-            onChange={(e) => setNewKey(e.target.value)}
+        <div style={{ background: "#111" }}>
+          <div
             style={{
-              padding: "4px 6px",
-              flex: 1,
-              background: "#222",
-              color: "white",
-              border: "1px solid #444",
-              borderRadius: 4,
-            }}
-          />
-          <input
-            placeholder="Value"
-            value={newValue}
-            onChange={(e) => setNewValue(e.target.value)}
-            style={{
-              padding: "4px 6px",
-              flex: 1,
-              background: "#222",
-              color: "white",
-              border: "1px solid #444",
-              borderRadius: 4,
-            }}
-          />
-          <button
-            onClick={handleAdd}
-            style={{
-              padding: "4px 8px",
-              background: "#2a7",
-              color: "white",
-              border: "none",
-              borderRadius: 4,
-              cursor: "pointer",
+              padding: "8px 12px",
+              display: "flex",
+              gap: 6,
             }}
           >
-            Add
-          </button>
-          <button
-            onClick={() => setAdding(false)}
+            <input
+              placeholder="Key"
+              value={newKey}
+              onChange={(e) => setNewKey(e.target.value)}
+              style={{
+                padding: "4px 6px",
+                flex: 1,
+                background: "#222",
+                color: "white",
+                border: "1px solid #444",
+                borderRadius: 4,
+              }}
+            />
+            <input
+              placeholder="Value"
+              value={newValue}
+              onChange={(e) => setNewValue(e.target.value)}
+              style={{
+                padding: "4px 6px",
+                flex: 1,
+                background: "#222",
+                color: "white",
+                border: "1px solid #444",
+                borderRadius: 4,
+              }}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "10px", margin: "10px" }}>
+            <button
+              onClick={handleAdd}
+              style={{
+                padding: "4px 8px",
+                background: "#2a7",
+                color: "white",
+                border: "none",
+                borderRadius: 4,
+                cursor: "pointer",
+              }}
+            >
+              Add
+            </button>
+            <button
+              onClick={() => setAdding(false)}
+              style={{
+                padding: "4px 8px",
+                background: "#a22",
+                color: "white",
+                border: "none",
+                borderRadius: 4,
+                cursor: "pointer",
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+      {tab === "console" && (
+        <div style={{ width: "100%" }}>
+          <input
+            ref={consoleInputRef}
             style={{
-              padding: "4px 8px",
-              background: "#a22",
+              padding: "6px 10px",
+              background: "#222",
+              border: "1px solid #444",
               color: "white",
-              border: "none",
               borderRadius: 4,
+              fontFamily: "monospace",
+              margin: "6px",
+              width: "80%",
+            }}
+            placeholder="Console Input>"
+          />
+          <button
+            style={{
+              padding: "4px 14px",
+              background: "#007acc",
+              borderRadius: 4,
+              border: "none",
+              color: "white",
               cursor: "pointer",
+              fontSize: 14,
+            }}
+            onClick={() => {
+              try {
+                const result = Function(
+                  `"use strict"; return (${consoleInputRef.current.value});`
+                )();
+                console.log(result);
+              } catch (e) {
+                console.error(e);
+              }
             }}
           >
-            Cancel
+            Run^
           </button>
         </div>
       )}
-
+      {tab === "urlEditor" && (
+        <div
+          style={{
+            padding: "10px",
+            gap: "10px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <input
+            style={{
+              width: "100%",
+              padding: "6px 10px",
+              background: "#222",
+              border: "1px solid #444",
+              color: "white",
+              borderRadius: 4,
+              fontFamily: "monospace",
+            }}
+            defaultValue={window.location.href}
+            ref={urlInputRef}
+          />
+          <button
+            style={{
+              padding: "4px 14px",
+              background: "#007acc",
+              borderRadius: 4,
+              border: "none",
+              color: "white",
+              cursor: "pointer",
+              fontSize: 14,
+              width: "100%",
+            }}
+            onClick={() => (window.location.href = urlInputRef.current.value)}
+          >
+            Go ^
+          </button>
+        </div>
+      )}
       <div
         style={{
           flex: 1,
@@ -388,7 +469,6 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
               }}
             />
           ))}
-
         {tab === "console" && (
           <ConsoleTab
             handleConsoleTypeSelector={handleConsoleTypeSelector}
@@ -396,9 +476,7 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
             selectedConsoleFilter={selectedConsoleFilter}
           />
         )}
-
         {tab === "network" && <NetworkTab networkCalls={filteredNetwork} />}
-
         {tab === "download" && (
           <button
             onClick={() =>
@@ -423,7 +501,6 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
             Download Logs as JSON
           </button>
         )}
-
         {tab === "features" && (
           <div>
             <h4>Important Features</h4>

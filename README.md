@@ -6,9 +6,8 @@
   <img src="https://res.cloudinary.com/sahiljena/image/upload/v1765301595/Screenshot_2025-12-09_at_11.02.10_PM_pnejef.png" width="45%" />
 </p>
 
-
 A powerful, plug-and-play **debugging panel for WebViews, PWAs, and web apps**.
-Inspect storage, track network calls, monitor console errors, and check browser capabilities — **all directly inside your app**, without USB cables or external DevTools.
+Inspect storage, track network calls, edit url, monitor console errors, and check browser capabilities — **all directly inside your app**, without USB cables or external DevTools.
 
 If you’ve ever struggled to debug a mobile WebView… this tool is built for you.
 
@@ -49,6 +48,7 @@ The debugger immediately starts capturing:
 - localStorage & sessionStorage
 - Network requests and cURL
 - Fully functional console
+- URL Editor
 - Environment features like `SharedArrayBuffer`
 
 No setup. No configuration. No hassle.
@@ -60,6 +60,7 @@ No setup. No configuration. No hassle.
 - **Live inspection** of cookies, localStorage, and sessionStorage
 - **Edit, delete, and create** storage entries effortlessly
 - **Real-time console tracking**
+- **URL Editor** change webview url easily
 - **Network request viewer** with searchable logs
 - **One-click export**: Receive a compressed JSON containing _everything_
 - **Feature detector**: Instantly check browser API support
@@ -80,14 +81,14 @@ Add an environment flag to show the debugger only in dev builds:
 
 ---
 
-## **📁 Links**
+## **Links**
 
 - **GitHub:** [https://github.com/sahiljena/react-webview-debugger](https://github.com/sahiljena/react-webview-debugger)
 - **NPM:** [https://www.npmjs.com/package/@sahiljena/react-webview-debugger](https://www.npmjs.com/package/@sahiljena/react-webview-debugger)
 
 ---
 
-## **📜 License**
+## **License**
 
 MIT © Sahil Jena
 
