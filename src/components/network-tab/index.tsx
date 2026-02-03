@@ -21,7 +21,7 @@ export const NetworkTab = ({
     >
       {networkCalls.map((call, i) => (
         <div
-          key={i}
+          key={`${call.url}-${i}`}
           style={{
             padding: "12px",
             borderRadius: "10px",

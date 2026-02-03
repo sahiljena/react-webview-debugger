@@ -4,9 +4,20 @@ import React, { useState } from "react";
 import { useConsoleLogger } from "../hooks/use-console-logger";
 import { useNetworkLogger } from "../hooks/use-network-logger";
 import { DebugPanel } from "./dubugger-pannel";
+import { useShakeDevRedirect } from "../hooks/use-device-shake";
 
-export const DebuggerTool = () => {
-  const [open, setOpen] = useState(false);
+export interface IOptionalTab {
+  tabName: string;
+  tabKey: string;
+  component: React.ReactNode;
+}
+
+export interface IDebuggerTool {
+  optionalTabs?: IOptionalTab[];
+}
+
+export const DebuggerTool = ({ optionalTabs }: IDebuggerTool) => {
+  const { open, setOpen } = useShakeDevRedirect();
 
   const { consoleLogs } = useConsoleLogger();
   const { networkLogs } = useNetworkLogger();
@@ -38,6 +49,7 @@ export const DebuggerTool = () => {
         <DebugPanel
           consoleLogs={consoleLogs}
           networkLogs={networkLogs}
+          optionalTabs={optionalTabs}
           onClose={() => setOpen(false)}
         />
       )}

@@ -1,11 +1,22 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { downloadLogs } from "../utils/download-logs";
 import { EditableBlock } from "./editable-block";
 import { CURATED_FEATURES, TABS } from "./constants";
 import { ConsoleTab } from "./console";
 import { NetworkTab } from "./network-tab";
+import { IOptionalTab } from "./debugger-tool";
 
-export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
+export const DebugPanel = ({
+  consoleLogs = [],
+  networkLogs,
+  onClose,
+  optionalTabs,
+}: {
+  consoleLogs: any[];
+  networkLogs: any[];
+  onClose: () => void;
+  optionalTabs: IOptionalTab[];
+}) => {
   const [tab, setTab] = useState("cookies");
   const [search, setSearch] = useState("");
   const [adding, setAdding] = useState(false);
@@ -67,7 +78,22 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
     );
   }, [networkLogs, search]);
 
+  const allTabs = useMemo(() => {
+    const modifiedOptionalTabs = optionalTabs.map((tab) => {
+      return { key: tab.tabKey, label: tab.tabName };
+    });
+    return [...TABS, ...modifiedOptionalTabs];
+  }, [optionalTabs]);
+
+  const findComponenToRender = useMemo(() => {
+    const filteredComponent = optionalTabs?.filter(
+      (opTab) => opTab.tabKey === tab
+    )?.[0];
+    return filteredComponent;
+  }, [optionalTabs, tab]);
+
   const handleCookieSave = (key: string, newVal: string) => {
+    if (!document) return;
     document.cookie = `${key}=${newVal}`;
     setCookies((prev) =>
       prev.map((c) => (c.key === key ? { ...c, value: newVal } : c))
@@ -107,9 +133,6 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
     setIsFullScreen((prev) => !prev);
   };
 
-  /** --------------------------
-   * Add new item
-   ---------------------------**/
   const handleAdd = () => {
     if (!newKey) return;
 
@@ -128,10 +151,6 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
     setNewValue("");
     setAdding(false);
   };
-
-  /** --------------------------
-   * Tabs definition
-   ---------------------------**/
 
   const tabButton = (t: any) => ({
     padding: "6px 12px",
@@ -248,7 +267,7 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
           flexWrap: "wrap",
         }}
       >
-        {TABS.map((t) => (
+        {allTabs.map((t) => (
           <button
             key={t.key}
             onClick={() => {
@@ -550,6 +569,9 @@ export const DebugPanel = ({ consoleLogs = [], networkLogs, onClose }: any) => {
               )}
             </div>
           </div>
+        )}
+        {findComponenToRender?.component && (
+          <>{findComponenToRender.component}</>
         )}
       </div>
     </div>
